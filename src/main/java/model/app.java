@@ -32,8 +32,10 @@ public class app {
                 case 4:
                     break;
                 case 5:
+                    searchPetsByName(pets);
                     break;
                 case 6:
+                    searchPetsByAge(pets);
                     break;
                 case 7:
                     isRunning = false;
@@ -91,6 +93,35 @@ public class app {
             }
         }
     }
+
+    private static void searchPetsByName(Set<Pet> pets) {
+        Scanner input = new Scanner(System.in);
+
+        log("Enter a name to search: ", true);
+        String userChoice = input.nextLine();
+
+        System.out.printf("\n%3s %10s %4s\n", "ID", "Name", "Age");
+        for (Pet pet: pets) {
+            if(pet.getName().equals(userChoice)) {
+                System.out.printf("%3d %10s %4d\n", pet.getId(), pet.getName(), pet.getAge());
+            }
+        }
+    }
+
+    private static void searchPetsByAge(Set<Pet> pets) {
+        Scanner input = new Scanner(System.in);
+
+        log("Enter age to search: ", true);
+        int userChoice = input.nextInt();
+
+        System.out.printf("\n%3s %10s %4s\n", "ID", "Name", "Age");
+        for (Pet pet: pets) {
+            if(pet.getAge() == (userChoice)) {
+                System.out.printf("%3d %10s %4d\n", pet.getId(), pet.getName(), pet.getAge());
+            }
+        }
+    }
+
 
     private static void log(String m, boolean isSameLine) {
         if (isSameLine) {
