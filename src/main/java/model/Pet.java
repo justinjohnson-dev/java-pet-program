@@ -1,12 +1,25 @@
 package model;
 
-public class Pet {
+
+public class Pet implements Comparable<Pet> {
     private int id;
+    private static int nextId = 0;
     private String name;
     private int age;
 
-    public Pet() {}
 
+    public Pet(String name, int age) {
+        this.id = nextId;
+        this.name = name;
+        this.age = age;
+
+        nextId++;
+    }
+
+    @Override
+    public int compareTo(Pet pet) {
+        return id - pet.getId();
+    }
 
     public int getId() {
         return id;
