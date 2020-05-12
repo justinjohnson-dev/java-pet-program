@@ -3,6 +3,7 @@ package model;
 import java.util.Scanner;
 
 public class app {
+
     public static void main(String args[]) {
         run();
     }
@@ -62,7 +63,23 @@ public class app {
     }
 
     private static void addPets() {
-        log("add pet");
+        Pet newPet = new Pet();
+        Scanner input = new Scanner(System.in);
+
+        boolean isDone = false;
+
+        while(!isDone) {
+            log("add pet (name, age): ");
+            String userInput = input.next();
+
+            if (userInput.equals("done")) {
+                isDone = true;
+            } else {
+                newPet.setName(userInput);
+            }
+        }
+
+        System.out.print(newPet);
     }
 
     private static void log(String m, boolean isSameLine) {
