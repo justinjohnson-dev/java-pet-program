@@ -3,19 +3,18 @@ package model;
 
 public class Pet implements Comparable<Pet> {
     private int id;
-    private static int nextId = 0;
     private String name;
     private int age;
 
-
-    public Pet(String name, int age) {
-        this.id = nextId;
+    public Pet(int id, String name, int age) {
+        this.id = id;
         this.name = name;
         this.age = age;
-
-        nextId++;
     }
 
+    // overriding the compareTo method by comparing by pet ID
+    // Watch video: https://www.youtube.com/watch?v=5gzayWys06o
+    // to understand how to properly implement this functionality
     @Override
     public int compareTo(Pet pet) {
         return id - pet.getId();
@@ -45,5 +44,3 @@ public class Pet implements Comparable<Pet> {
         this.age = age;
     }
 }
-
-

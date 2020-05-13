@@ -28,8 +28,10 @@ public class app {
                     addPets(pets);
                     break;
                 case 3:
+                    updatePet(pets);
                     break;
                 case 4:
+                    removePet(pets);
                     break;
                 case 5:
                     searchPetsByName(pets);
@@ -65,7 +67,9 @@ public class app {
         ArrayList<Pet> sortPets = new ArrayList<>(pets);
         Collections.sort(sortPets);
 
-        System.out.printf("\n%3s %10s %4s\n", "ID", "Name", "Age");
+        // using 3-10-4 / You may use 3 characters for ID, 10 characters for
+        // NAME, and 4 characters for AGE.
+        printf();
         for (Pet pet : sortPets) {
             System.out.printf("%3d %10s %4d\n", pet.getId(), pet.getName(), pet.getAge());
         }
@@ -78,6 +82,7 @@ public class app {
 
         boolean isDone = false;
 
+        int petID = 0;
         while(!isDone) {
             log("add pet (name, age): ", true);
             String userInput = input.nextLine();
@@ -89,9 +94,54 @@ public class app {
                 String name = petEntry[0];
                 String ageAsString = petEntry[1];
                 int age = Integer.parseInt(ageAsString);
-                pet.add(new Pet(name, age));
+                pet.add(new Pet(petID, name, age));
+
+                petID++;
             }
         }
+        log(" ");
+    }
+
+    private static void updatePet(Set<Pet> pets) {
+        Scanner input = new Scanner(System.in);
+        ArrayList<Pet> petList = new ArrayList<>(pets);
+
+        log("Enter the pet ID you can to update: ", true);
+        int userChoice = Integer.parseInt(input.nextLine());
+
+        for (Pet pet: petList) {
+            if(pet.getId() == (userChoice)) {
+                pets.remove(pet);
+
+                log("Enter new name and new age: ");
+                String newPet = input.nextLine();
+
+                // creating an array from splitting the inputs
+                // https://stackoverflow.com/questions/50903859/java-string-get-the-character-after-space/50903903
+                String[] petEntry = newPet.split(" ");
+                String name = petEntry[0];
+                String ageAsString = petEntry[1];
+                int age = Integer.parseInt(ageAsString);
+                pets.add(new Pet(userChoice, name, age));
+            }
+        }
+        log(" ");
+    }
+
+    private static void removePet(Set<Pet> pets) {
+        Scanner input = new Scanner(System.in);
+        ArrayList<Pet> petList = new ArrayList<>(pets);
+
+        log("Enter the pet ID to remove: ", true);
+        int userChoice = Integer.parseInt(input.nextLine());
+
+        for (Pet pet: petList) {
+            if(pet.getId() == (userChoice)) {
+                log(pet.getName() + " " + pet.getAge() + " is removed.");
+                pets.remove(pet);
+            }
+        }
+        log(" ");
     }
 
     private static void searchPetsByName(Set<Pet> pets) {
@@ -100,12 +150,13 @@ public class app {
         log("Enter a name to search: ", true);
         String userChoice = input.nextLine();
 
-        System.out.printf("\n%3s %10s %4s\n", "ID", "Name", "Age");
+        printf();
         for (Pet pet: pets) {
             if(pet.getName().equals(userChoice)) {
                 System.out.printf("%3d %10s %4d\n", pet.getId(), pet.getName(), pet.getAge());
             }
         }
+        log(" ");
     }
 
     private static void searchPetsByAge(Set<Pet> pets) {
@@ -114,12 +165,13 @@ public class app {
         log("Enter age to search: ", true);
         int userChoice = input.nextInt();
 
-        System.out.printf("\n%3s %10s %4s\n", "ID", "Name", "Age");
+        printf();
         for (Pet pet: pets) {
             if(pet.getAge() == (userChoice)) {
                 System.out.printf("%3d %10s %4d\n", pet.getId(), pet.getName(), pet.getAge());
             }
         }
+        log(" ");
     }
 
 
@@ -133,5 +185,9 @@ public class app {
 
     private static void log(String m) {
         System.out.println(m);
+    }
+
+    private static void printf() {
+        System.out.printf("\n%3s %10s %4s\n", "ID", "Name", "Age");
     }
 }
