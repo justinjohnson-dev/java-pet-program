@@ -95,12 +95,10 @@ public class app {
             String userInput = input.nextLine();
 
             // using the equalsIgnoreCase method
-            // https://www.tutorialspoint.com/java/lang/string_equalsignorecase.html
+            // https://www.tutorialspoint.com/java/lang/string_equalsignorecase.htm
             if (userInput.equalsIgnoreCase("done")) {
                 isDone = true;
             } else {
-                // creating an array from splitting the inputs
-                // https://stackoverflow.com/questions/50903859/java-string-get-the-character-after-space/50903903
                 String[] petEntry = userInput.split(" ");
                 String name = petEntry[0];
                 String ageAsString = petEntry[1];
@@ -126,6 +124,8 @@ public class app {
         // save it into the index in which the old pet was deleted.
         for (Pet pet: petList) {
             if(pet.getId() == (userChoice)) {
+                String oldPetName = pet.getName();
+                int oldPetAge = pet.getAge();
                 pets.remove(pet);
 
                 log("Enter new name and new age: ", true);
@@ -138,6 +138,9 @@ public class app {
                 String ageAsString = petEntry[1];
                 int age = Integer.parseInt(ageAsString);
                 pets.add(new Pet(userChoice, name, age));
+
+                log("");
+                log(oldPetName + " " + oldPetAge + " changed to " + name + " " + age);
             }
         }
         log(" ");
