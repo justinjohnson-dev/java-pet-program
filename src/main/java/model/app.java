@@ -94,7 +94,9 @@ public class app {
             log("add pet (name, age): ", true);
             String userInput = input.nextLine();
 
-            if (userInput.equals("done") || userInput.equals("Done")) {
+            // using the equalsIgnoreCase method
+            // https://www.tutorialspoint.com/java/lang/string_equalsignorecase.html
+            if (userInput.equalsIgnoreCase("done")) {
                 isDone = true;
             } else {
                 String[] petEntry = userInput.split(" ");
