@@ -10,10 +10,10 @@ public class app {
     private static void run() {
         Scanner userInput = new Scanner(System.in);
 
+        // set to hold our pets during program run
         Set<Pet> pets = new HashSet<>();
 
         boolean isRunning = true;
-
         while (isRunning) {
             int mode;
 
@@ -67,8 +67,6 @@ public class app {
         ArrayList<Pet> sortPets = new ArrayList<>(pets);
         Collections.sort(sortPets);
 
-        // using 3-10-4 / You may use 3 characters for ID, 10 characters for
-        // NAME, and 4 characters for AGE.
         printf();
         for (Pet pet : sortPets) {
             System.out.printf("%3d %10s %4d\n", pet.getId(), pet.getName(), pet.getAge());
@@ -79,10 +77,19 @@ public class app {
 
     private static void addPets(Set<Pet> pet) {
         Scanner input = new Scanner(System.in);
-
         boolean isDone = false;
 
-        int petID = 0;
+        // setting PetID to the size of the list
+        // so that if user decides to add more pets after the first looping
+        // it will still add pets in the correct index.
+        int petID = pet.size();
+        if (pet.isEmpty()) {
+            // if no pets are in memory
+            petID = 0;
+        }
+
+        // Creating a while loop to continuously allow user to add pets
+        // until user types 'done'
         while(!isDone) {
             log("add pet (name, age): ", true);
             String userInput = input.nextLine();
@@ -104,16 +111,20 @@ public class app {
 
     private static void updatePet(Set<Pet> pets) {
         Scanner input = new Scanner(System.in);
+        // Need to work with a list to properly manipulate pets
         ArrayList<Pet> petList = new ArrayList<>(pets);
 
         log("Enter the pet ID you can to update: ", true);
         int userChoice = Integer.parseInt(input.nextLine());
 
+        // loop to find index of pet user wants to update
+        // will delete the pet at that index and then create a new pet
+        // save it into the index in which the old pet was deleted.
         for (Pet pet: petList) {
             if(pet.getId() == (userChoice)) {
                 pets.remove(pet);
 
-                log("Enter new name and new age: ");
+                log("Enter new name and new age: ", true);
                 String newPet = input.nextLine();
 
                 // creating an array from splitting the inputs
@@ -130,6 +141,7 @@ public class app {
 
     private static void removePet(Set<Pet> pets) {
         Scanner input = new Scanner(System.in);
+        // creating a pet List so we can properly remove pet
         ArrayList<Pet> petList = new ArrayList<>(pets);
 
         log("Enter the pet ID to remove: ", true);
@@ -152,6 +164,7 @@ public class app {
 
         printf();
         for (Pet pet: pets) {
+            // comparing strings, can use .equals()
             if(pet.getName().equals(userChoice)) {
                 System.out.printf("%3d %10s %4d\n", pet.getId(), pet.getName(), pet.getAge());
             }
@@ -188,6 +201,8 @@ public class app {
     }
 
     private static void printf() {
+        // using 3-10-4 / You may use 3 characters for ID, 10 characters for
+        // NAME, and 4 characters for AGE.
         System.out.printf("\n%3s %10s %4s\n", "ID", "Name", "Age");
     }
 }
