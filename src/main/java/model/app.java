@@ -99,6 +99,8 @@ public class app {
             if (userInput.equalsIgnoreCase("done")) {
                 isDone = true;
             } else {
+                // creating an array from splitting the inputs
+                // https://stackoverflow.com/questions/50903859/java-string-get-the-character-after-space/50903903
                 String[] petEntry = userInput.split(" ");
                 String name = petEntry[0];
                 String ageAsString = petEntry[1];
