@@ -268,7 +268,6 @@ public class app {
         log(" ");
     }
 
-
     private static void log(String m, boolean isSameLine) {
         if (isSameLine) {
             System.out.print(m);
