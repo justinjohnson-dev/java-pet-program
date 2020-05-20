@@ -27,7 +27,8 @@ public class Pet implements Comparable<Pet>, Serializable {
     // referenced from: https://mkyong.com/java/how-to-read-and-write-java-object-to-a-file/
     @Override
     public String toString() {
-        return "ID:" + id + "\nName:" + name + "\nAge:" + age;
+        return new StringBuffer(" ID: ").append(this.id)
+                .append(" Name : ").append(this.name).append(" Age : ").append(this.age).toString();
     }
 
     public int getId() {

@@ -111,10 +111,14 @@ public class app {
             ObjectOutputStream stream = new ObjectOutputStream(file);
             stream.writeObject(pets);
 
+            stream.close();
+            System.out.println("The Object  was succesfully written to a file");
+
         } catch (Exception e) {
             System.out.println(e);
         }
     }
+
 
     private static void displayMenu() {
         log("What would you like to do?");
