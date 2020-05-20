@@ -67,6 +67,7 @@ public class app {
     }
 
     // Function that reads data from .txt file and creates a list
+    // Function referenced from week five of our data structures and algorithms class
     private Set<Pet> readFromFile(File file) {
         try {
             Set<Pet> pets = new HashSet<>();
