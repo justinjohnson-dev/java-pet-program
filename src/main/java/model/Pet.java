@@ -1,10 +1,13 @@
 package model;
+import java.io.Serializable;
 
 
-public class Pet implements Comparable<Pet> {
+public class Pet implements Comparable<Pet>, Serializable {
     private int id;
     private String name;
     private int age;
+
+    public Pet() {}
 
     public Pet(int id, String name, int age) {
         this.id = id;
@@ -18,6 +21,13 @@ public class Pet implements Comparable<Pet> {
     @Override
     public int compareTo(Pet pet) {
         return id - pet.getId();
+    }
+
+    // to string method to write to txt file
+    // referenced from: https://mkyong.com/java/how-to-read-and-write-java-object-to-a-file/
+    @Override
+    public String toString() {
+        return "ID:" + id + "\nName:" + name + "\nAge:" + age;
     }
 
     public int getId() {

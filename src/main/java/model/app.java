@@ -1,52 +1,117 @@
 package model;
 
+import java.io.*;
 import java.util.*;
 
 public class app {
     public static void main(String args[]) {
-        run();
+        app obj = new app();
+        obj.run();
     }
 
-    private static void run() {
-        Scanner userInput = new Scanner(System.in);
+    private void run() {
+        try {
+            Scanner userInput = new Scanner(System.in);
 
-        // set to hold our pets during program run
-        Set<Pet> pets = new HashSet<>();
+            log("would you like to start with a pre-defined pet list(0) or start from scratch(1)? ");
+            int userSelection = userInput.nextInt();
+            Set<Pet> pets = new HashSet<>();
 
-        boolean isRunning = true;
-        while (isRunning) {
-            int mode;
-
-            displayMenu();
-
-            mode = userInput.nextInt();
-            switch (mode) {
-                case 1:
-                    viewAllPets(pets);
-                    break;
-                case 2:
-                    addPets(pets);
-                    break;
-                case 3:
-                    updatePet(pets);
-                    break;
-                case 4:
-                    removePet(pets);
-                    break;
-                case 5:
-                    searchPetsByName(pets);
-                    break;
-                case 6:
-                    searchPetsByAge(pets);
-                    break;
-                case 7:
-                    isRunning = false;
-                    break;
-                default:
-                    log("\nInvalid input\n" +
-                            "Please enter one of the following\n");
-                    break;
+            // Letting the user start with a pre-defined list of pets
+            if(userSelection == 1) {
+                File p = new File("J:\\Software Engineering\\petInput.txt");
+                pets = readFromFile(p);
             }
+
+            boolean isRunning = true;
+            while (isRunning) {
+                int mode;
+
+                displayMenu();
+
+                mode = userInput.nextInt();
+                switch (mode) {
+                    case 1:
+                        viewAllPets(pets);
+                        break;
+                    case 2:
+                        addPets(pets);
+                        break;
+                    case 3:
+                        updatePet(pets);
+                        break;
+                    case 4:
+                        removePet(pets);
+                        break;
+                    case 5:
+                        searchPetsByName(pets);
+                        break;
+                    case 6:
+                        searchPetsByAge(pets);
+                        break;
+                    case 7:
+                        isRunning = false;
+                        writePetsToFile(pets);
+                        break;
+                    default:
+                        log("\nInvalid input\n" +
+                                "Please enter one of the following\n");
+                        break;
+                }
+            }
+        } catch(Exception e) {
+            log("");
+            System.out.println(e);
+            log("You may have entered characters instead of numbers");
+        }
+    }
+
+    // Function that reads data from .txt file and creates a list
+    private Set<Pet> readFromFile(File file) {
+        try {
+            Set<Pet> pets = new HashSet<>();
+
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            String tempLine = "";
+
+            while (tempLine != null) {
+                tempLine = bufferedReader.readLine();
+                if (tempLine != null) {
+                    // found that you can only call the regex split on a array not a list
+                    String[] tmpLineArray = tempLine.split("\\|");
+
+                    // Creating a procInfo object
+                    Pet p = new Pet();
+
+                    // Setting the name,id,priority, and runtime while reading in from file
+                    p.setId(Integer.parseInt(tmpLineArray[0]));
+                    p.setName(tmpLineArray[1]);
+                    p.setAge(Integer.parseInt(tmpLineArray[2]));
+
+                    // Adding object to our list to be returned
+                    pets.add(p);
+                }
+            }
+
+            return pets;
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    private static void writePetsToFile(Set<Pet> pets) {
+        try {
+            // Using serializable to write pets to a txt file
+            // code referenced from: https://stackoverflow.com/questions/17293991/how-to-write-and-read-java-serialized-objects-into-a-file
+            FileOutputStream file = new FileOutputStream(new File("pets.txt"));
+            ObjectOutputStream stream = new ObjectOutputStream(file);
+            stream.writeObject(pets);
+
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
@@ -99,13 +164,22 @@ public class app {
             if (userInput.equalsIgnoreCase("done")) {
                 isDone = true;
             } else {
-                String[] petEntry = userInput.split(" ");
-                String name = petEntry[0];
-                String ageAsString = petEntry[1];
-                int age = Integer.parseInt(ageAsString);
-                pet.add(new Pet(petID, name, age));
+                if (pet.size() >= 5) {
+                    log("Error: Database is full.");
+                    isDone = true;
+                } else {
+                    String[] petEntry = userInput.split(" ");
+                    String name = petEntry[0];
+                    String ageAsString = petEntry[1];
+                    int age = Integer.parseInt(ageAsString);
 
-                petID++;
+                    if (age > 20) {
+                        log("Error: " + age + " is not a valid age.\n");
+                    } else {
+                        pet.add(new Pet(petID, name, age));
+                    }
+                    petID++;
+                }
             }
         }
         log(" ");
