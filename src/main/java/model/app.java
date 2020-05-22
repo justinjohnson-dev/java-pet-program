@@ -101,7 +101,7 @@ public class app {
             stream.writeObject(pets);
 
             stream.close();
-            System.out.println("The Object  was succesfully written to a file");
+            System.out.println("The Object  was successfully written to a file");
 
         } catch (Exception e) {
             System.out.println(e);
@@ -147,16 +147,16 @@ public class app {
         // Creating a while loop to continuously allow user to add pets
         // until user types 'done'
         while(!isDone) {
-            log("add pet (name, age): ", true);
-            String userInput = input.nextLine();
-
-            // using the equalsIgnoreCase method
-            // https://www.tutorialspoint.com/java/lang/string_equalsignorecase.htm
-            if (userInput.equalsIgnoreCase("done")) {
+            if (pet.size() > 5) {
+                log("Error: Database is full.");
                 isDone = true;
             } else {
-                if (pet.size() >= 5) {
-                    log("Error: Database is full.");
+                log("add pet (name, age): ", true);
+                String userInput = input.nextLine();
+
+                // using the equalsIgnoreCase method
+                // https://www.tutorialspoint.com/java/lang/string_equalsignorecase.htm
+                if (userInput.equalsIgnoreCase("done")) {
                     isDone = true;
                 } else {
                     try {
