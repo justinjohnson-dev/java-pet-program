@@ -38,18 +38,9 @@ public class app {
                         addPets(pets);
                         break;
                     case 3:
-                        updatePet(pets);
-                        break;
-                    case 4:
                         removePet(pets);
                         break;
-                    case 5:
-                        searchPetsByName(pets);
-                        break;
-                    case 6:
-                        searchPetsByAge(pets);
-                        break;
-                    case 7:
+                    case 4:
                         isRunning = false;
                         writePetsToFile(pets);
                         break;
@@ -59,10 +50,8 @@ public class app {
                         break;
                 }
             }
-        } catch(Exception e) {
-            log("");
+        } catch (Exception e) {
             System.out.println(e);
-            log("You may have entered characters instead of numbers");
         }
     }
 
@@ -106,7 +95,7 @@ public class app {
     private static void writePetsToFile(Set<Pet> pets) {
         try {
             // Using serializable to write pets to a txt file
-            // code referenced from: https://stackoverflow.com/questions/17293991/how-to-write-and-read-java-serialized-objects-into-a-file
+            // code referenced from: https://examples.javacodegeeks.com/core-java/io/fileoutputstream/how-to-write-an-object-to-file-in-java/
             FileOutputStream file = new FileOutputStream(new File("pets.txt"));
             ObjectOutputStream stream = new ObjectOutputStream(file);
             stream.writeObject(pets);
@@ -124,11 +113,8 @@ public class app {
         log("What would you like to do?");
         log("\t1) View all pets");
         log("\t2) Add more pets");
-        log("\t3) Update an existing pet");
-        log("\t4) Remove an existing pet");
-        log("\t5) Search pets by name");
-        log("\t6) Search pets by age");
-        log("\t7) exit program");
+        log("\t3) Remove an existing pet");
+        log("\t4) exit program");
         log("Your choice: ", true);
     }
 
@@ -173,53 +159,28 @@ public class app {
                     log("Error: Database is full.");
                     isDone = true;
                 } else {
-                    String[] petEntry = userInput.split(" ");
-                    String name = petEntry[0];
-                    String ageAsString = petEntry[1];
-                    int age = Integer.parseInt(ageAsString);
+                    try {
+                        String[] petEntry = userInput.split(" ");
+                        String name = petEntry[0];
+                        String ageAsString = petEntry[1];
+                        int age = Integer.parseInt(ageAsString);
 
-                    if (age > 20) {
-                        log("Error: " + age + " is not a valid age.\n");
-                    } else {
-                        pet.add(new Pet(petID, name, age));
+                        if (age > 20) {
+                            log("Error: " + age + " is not a valid age.\n");
+                        } else {
+                            if (userInput.length() != 2) {
+                                log("Error: " + userInput + " is not a valid input.");
+                            } else if (userInput.length() == 1) {
+                                log("Error: " + name + " is not a valid input.");
+                            } else {
+                                pet.add(new Pet(petID, name, age));
+                            }
+                        }
+                        petID++;
+                    } catch (Exception e) {
+                        log("Error: " + userInput + " is not a valid input.");
                     }
-                    petID++;
                 }
-            }
-        }
-        log(" ");
-    }
-
-    private static void updatePet(Set<Pet> pets) {
-        Scanner input = new Scanner(System.in);
-        // Need to work with a list to properly manipulate pets
-        ArrayList<Pet> petList = new ArrayList<>(pets);
-
-        log("Enter the pet ID you can to update: ", true);
-        int userChoice = Integer.parseInt(input.nextLine());
-
-        // loop to find index of pet user wants to update
-        // will delete the pet at that index and then create a new pet
-        // save it into the index in which the old pet was deleted.
-        for (Pet pet: petList) {
-            if(pet.getId() == (userChoice)) {
-                String oldPetName = pet.getName();
-                int oldPetAge = pet.getAge();
-                pets.remove(pet);
-
-                log("Enter new name and new age: ", true);
-                String newPet = input.nextLine();
-
-                // creating an array from splitting the inputs
-                // https://stackoverflow.com/questions/50903859/java-string-get-the-character-after-space/50903903
-                String[] petEntry = newPet.split(" ");
-                String name = petEntry[0];
-                String ageAsString = petEntry[1];
-                int age = Integer.parseInt(ageAsString);
-                pets.add(new Pet(userChoice, name, age));
-
-                log("");
-                log(oldPetName + " " + oldPetAge + " changed to " + name + " " + age);
             }
         }
         log(" ");
@@ -233,41 +194,14 @@ public class app {
         log("Enter the pet ID to remove: ", true);
         int userChoice = Integer.parseInt(input.nextLine());
 
-        for (Pet pet: petList) {
-            if(pet.getId() == (userChoice)) {
-                log(pet.getName() + " " + pet.getAge() + " is removed.");
-                pets.remove(pet);
-            }
-        }
-        log(" ");
-    }
-
-    private static void searchPetsByName(Set<Pet> pets) {
-        Scanner input = new Scanner(System.in);
-
-        log("Enter a name to search: ", true);
-        String userChoice = input.nextLine();
-
-        printf();
-        for (Pet pet: pets) {
-            // comparing strings, can use .equals()
-            if(pet.getName().equals(userChoice)) {
-                System.out.printf("%3d %10s %4d\n", pet.getId(), pet.getName(), pet.getAge());
-            }
-        }
-        log(" ");
-    }
-
-    private static void searchPetsByAge(Set<Pet> pets) {
-        Scanner input = new Scanner(System.in);
-
-        log("Enter age to search: ", true);
-        int userChoice = input.nextInt();
-
-        printf();
-        for (Pet pet: pets) {
-            if(pet.getAge() == (userChoice)) {
-                System.out.printf("%3d %10s %4d\n", pet.getId(), pet.getName(), pet.getAge());
+        if (userChoice > petList.size() || userChoice < 0) {
+            log("Error: ID " + userChoice + " does not exist.");
+        } else {
+            for (Pet pet: petList) {
+                if(pet.getId() == (userChoice)) {
+                    log(pet.getName() + " " + pet.getAge() + " is removed.");
+                    pets.remove(pet);
+                }
             }
         }
         log(" ");
