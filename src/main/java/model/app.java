@@ -101,7 +101,7 @@ public class app {
             stream.writeObject(pets);
 
             stream.close();
-            System.out.println("The Object  was sucessfully written to a file");
+            System.out.println("The Object  was successfully written to a file");
 
         } catch (Exception e) {
             System.out.println(e);
