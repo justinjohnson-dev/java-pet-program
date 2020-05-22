@@ -168,10 +168,8 @@ public class app {
                         if (age > 20) {
                             log("Error: " + age + " is not a valid age.\n");
                         } else {
-                            if (userInput.length() != 2) {
+                            if (petEntry.length > 2) {
                                 log("Error: " + userInput + " is not a valid input.");
-                            } else if (userInput.length() == 1) {
-                                log("Error: " + name + " is not a valid input.");
                             } else {
                                 pet.add(new Pet(petID, name, age));
                             }
